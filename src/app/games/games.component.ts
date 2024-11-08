@@ -1,19 +1,24 @@
-import { Component } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
 @Component({
   selector: 'app-games',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   template: `
+    <h3>Los juegos favoritos de {{username}}</h3>
   <ul>
     @for (game of games; track game.id){
-      <li>{{game.name}}</li>
+      <li (click)="fav(game.name)">{{game.name}}</li>
     }
   </ul>
   `,
   styles: ``
 })
 export class GamesComponent {
+  @Input() username= '';
+  @Output() addFavoriteEvent = new EventEmitter<String>();
+
   games=[
     {id:1,
     name: 'Uncharted 4'},
@@ -23,4 +28,8 @@ export class GamesComponent {
     name: 'Zelda'}
 
   ]
+
+  fav(gameName: string) {
+    this.addFavoriteEvent.emit(gameName)
+  }
 }
